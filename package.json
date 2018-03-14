@@ -1,0 +1,15 @@
+{
+  "name": "clededouze-gl",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "babel src/index.js  -w --out-file lib/index.js --source-maps"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-cli": "^6.26.0"
+  },
+  "dependencies": {}
+}
