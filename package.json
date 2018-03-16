@@ -4,14 +4,18 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "babel src/index.js  -w --out-file lib/index.js --source-maps"
+    "start": "babel src/index.js  -w --out-file lib/index.js --source-maps",
+    "budo": " budo src/index.js --live -- -t babelify -t glslify"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.6.1",
-    "babel-preset-es2015": "^6.24.1"
+    "babel-preset-es2015": "^6.24.1",
+    "glslify": "^6.1.1"
   },
-  "dependencies": {}
+  "dependencies": {
+    "babelify": "^8.0.0"
+  }
 }
