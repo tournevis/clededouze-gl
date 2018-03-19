@@ -17,28 +17,28 @@ export default class Shaders {
 
     // Créer le programme shader
 
-    const shaderProgram = this.gl.createProgram()
-    this.gl.attachShader(shaderProgram, vertexShader)
-    this.gl.attachShader(shaderProgram, fragmentShader)
-    this.gl.linkProgram(shaderProgram)
-    
+    this.shaderProgram = this.gl.createProgram()
+    this.gl.attachShader(this.shaderProgram, vertexShader)
+    this.gl.attachShader(this.shaderProgram, fragmentShader)
+    this.gl.linkProgram(this.shaderProgram)
+
     // Si la création du programme shader a échoué, alerte
-    if (!this.gl.getProgramParameter(shaderProgram, this.gl.LINK_STATUS)) {
-      console.log('Impossible d\'initialiser le programme shader : ' + this.gl.getProgramInfoLog(shaderProgram))
+    if (!this.gl.getProgramParameter(this.shaderProgram, this.gl.LINK_STATUS)) {
+      console.log('Impossible d\'initialiser le programme shader : ' + this.gl.getProgramInfoLog(this.shaderProgram))
       return null
     }
-    return shaderProgram
+    return this.shaderProgram
   }
 
   loadShader(gl, type, source) {
-    const shader = gl.createShader(type)
-    gl.shaderSource(shader, source)
-    gl.compileShader(shader)
-    if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-      console.log('An error occurred compiling the shaders: ' + gl.getShaderInfoLog(shader));
-      gl.deleteShader(shader)
+    this.shader = gl.createShader(type)
+    gl.shaderSource(this.shader, source)
+    gl.compileShader(this.shader)
+    if (!gl.getShaderParameter(this.shader, gl.COMPILE_STATUS)) {
+      console.log('An error occurred compiling the shaders: ' + gl.getShaderInfoLog(this.shader));
+      gl.deleteShader(this.shader)
       return null
     }
-    return shader
+    return this.shader
   }
 }
