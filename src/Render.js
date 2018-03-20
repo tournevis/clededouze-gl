@@ -60,8 +60,19 @@ export default class Shaders {
           normalize,
           stride,
           offset);
+
       gl.enableVertexAttribArray(
           programInfo.attribLocations.vertexPosition);
+          gl.bindBuffer(gl.ARRAY_BUFFER, buffers.color);
+       gl.vertexAttribPointer(
+           programInfo.attribLocations.vertexColor,
+           4,
+           type,
+           normalize,
+           stride,
+           offset);
+       gl.enableVertexAttribArray(
+           programInfo.attribLocations.vertexColor);
     }
 
     // Indiquer à WebGL d'utiliser notre programme pour dessiner
