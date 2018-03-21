@@ -20,9 +20,9 @@ class ClededouzeGl {
     this.gl.clear(this.gl.COLOR_BUFFER_BIT|this.gl.DEPTH_BUFFER_BIT)
 
     const shaders = new Shader(this.gl, './shaders/index.vert', './shaders/index.frag')
-    const square =  this.initBuffers(this.gl)
-    const renderer =  new Render()
-    const programInfo = {
+    this.square =  this.initBuffers(this.gl)
+    this.renderer =  new Render()
+    this.programInfo = {
       program:  shaders.shaderProgram,
       attribLocations: {
         vertexPosition: this.gl.getAttribLocation( shaders.shaderProgram, 'aVertexPosition'),
@@ -35,7 +35,18 @@ class ClededouzeGl {
     };
 
     // Draw the scene
-    renderer.draw(this.gl, programInfo, square );
+
+    this.then = 0;
+    // Dessiner la scène répétitivement
+    requestAnimationFrame(this.render.bind(this));
+  }
+  render(now) {
+    now *= 0.001;  // conversion en secondes
+    const deltaTime = now - this.then;
+    this.then = now;
+
+    this.renderer.draw(this.gl, this.programInfo, this.square, deltaTime);
+    requestAnimationFrame(this.render.bind(this));
   }
   initBuffers(gl) {
 
@@ -45,6 +56,8 @@ class ClededouzeGl {
     // Définir le positionBuffer comme étant celui auquel appliquer les opérations
     // de tampon à partir d'ici.
     gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+
+
 
     // Créer maintenant un tableau des positions pour le carré.
     const positions = [
@@ -72,6 +85,7 @@ class ClededouzeGl {
     return {
       position: positionBuffer,
       color: colorBuffer,
+      rotation: 0
     }
   }
 }

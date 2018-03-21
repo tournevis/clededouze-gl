@@ -1,7 +1,7 @@
 import { mat4 } from 'gl-matrix'
 export default class Shaders {
   constructor () {}
-  draw(gl, programInfo, buffers) {
+  draw(gl, programInfo, buffers, deltaTime) {
     gl.clearColor(0.0, 0.0, 0.0, 1.0);  // effacement en noir, complètement opaque
     gl.clearDepth(1.0);                 // tout effacer
     gl.enable(gl.DEPTH_TEST);           // activer le test de profondeur
@@ -10,7 +10,6 @@ export default class Shaders {
     // Effacer le canevas avant que nous ne commencions à dessiner dessus.
 
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-
     // Créer une matrice de perspective, une matrice spéciale qui est utilisée pour
     // simuler la distorsion de la perspective dans une caméra.
     // Notre champ de vision est de 45 degrés, avec un rapport largeur/hauteur qui
@@ -23,7 +22,6 @@ export default class Shaders {
     const zNear = 0.1;
     const zFar = 100.0;
     const projectionMatrix = mat4.create();
-
     // note: glmatrix.js a toujours comme premier argument la destination
     // où stocker le résultat.
     mat4.perspective(projectionMatrix,
@@ -45,7 +43,8 @@ export default class Shaders {
 
     // Indiquer à WebGL comment extraire les positions à partir du tampon des
     // positions pour les mettre dans l'attribut vertexPosition.
-    {
+
+
       const numComponents = 2;  // extraire 2 valeurs par itération
       const type = gl.FLOAT;    // les données dans le tampon sont des flottants 32bit
       const normalize = false;  // ne pas normaliser
@@ -73,13 +72,19 @@ export default class Shaders {
            offset);
        gl.enableVertexAttribArray(
            programInfo.attribLocations.vertexColor);
-    }
+
 
     // Indiquer à WebGL d'utiliser notre programme pour dessiner
 
     gl.useProgram(programInfo.program);
 
     // Définir les uniformes du shader
+    buffers.rotation += deltaTime;
+
+    mat4.rotate(modelViewMatrix,  // matrice de destination
+              modelViewMatrix,  // matrice de rotation
+              buffers.rotation,   // rotation en radians
+              [0, 0, 1]);
 
     gl.uniformMatrix4fv(
         programInfo.uniformLocations.projectionMatrix,
