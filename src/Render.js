@@ -45,7 +45,7 @@ export default class Shaders {
     // positions pour les mettre dans l'attribut vertexPosition.
 
 
-      const numComponents = 2;  // extraire 2 valeurs par itération
+      const numComponents = 3;  // extraire 2 valeurs par itération
       const type = gl.FLOAT;    // les données dans le tampon sont des flottants 32bit
       const normalize = false;  // ne pas normaliser
       const stride = 0;         // combien d'octets à extraire entre un jeu de valeurs et le suivant
@@ -60,9 +60,8 @@ export default class Shaders {
           stride,
           offset);
 
-      gl.enableVertexAttribArray(
-          programInfo.attribLocations.vertexPosition);
-          gl.bindBuffer(gl.ARRAY_BUFFER, buffers.color);
+      gl.enableVertexAttribArray(programInfo.attribLocations.vertexPosition);
+      gl.bindBuffer(gl.ARRAY_BUFFER, buffers.color);
        gl.vertexAttribPointer(
            programInfo.attribLocations.vertexColor,
            4,
@@ -72,20 +71,18 @@ export default class Shaders {
            offset);
        gl.enableVertexAttribArray(
            programInfo.attribLocations.vertexColor);
-
-
-    // Indiquer à WebGL d'utiliser notre programme pour dessiner
+           // Tell WebGL which indices to use to index the vertices
+       gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffers.indices);
 
     gl.useProgram(programInfo.program);
 
     // Définir les uniformes du shader
-    buffers.rotation += deltaTime;
-
     mat4.rotate(modelViewMatrix,  // matrice de destination
               modelViewMatrix,  // matrice de rotation
-              buffers.rotation,   // rotation en radians
-              [0, 0, 1]);
+              buffers.rotation * .7,   // rotation en radians
+              [0, 1, 0]);
 
+                  buffers.rotation += deltaTime;
     gl.uniformMatrix4fv(
         programInfo.uniformLocations.projectionMatrix,
         false,
@@ -93,12 +90,14 @@ export default class Shaders {
     gl.uniformMatrix4fv(
         programInfo.uniformLocations.modelViewMatrix,
         false,
-        modelViewMatrix);
+        modelViewMatrix)
 
     {
+      const vertexCount = 36;
+      const type = gl.UNSIGNED_SHORT;
       const offset = 0;
-      const vertexCount = 4;
-      gl.drawArrays(gl.TRIANGLE_STRIP, offset, vertexCount);
+      gl.drawElements(gl.TRIANGLES, vertexCount, type, offset);
     }
+
   }
 }
