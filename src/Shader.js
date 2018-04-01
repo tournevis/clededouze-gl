@@ -4,16 +4,16 @@
 const glslify = require('glslify')
 
 export default class Shaders {
-  constructor (gl, vsSource, fsSource) {
-    this.gl = gl
+  constructor (context, vsSource, fsSource) {
+    this.gl = context
     this.vsSource = glslify('./shaders/index.vert')
     this.fsSource = glslify('./shaders/index.frag')
     this.initShaderProgram()
   }
 
   initShaderProgram () {
-    const vertexShader = this.loadShader(this.gl, this.gl.VERTEX_SHADER, this.vsSource);
-    const fragmentShader = this.loadShader(this.gl, this.gl.FRAGMENT_SHADER, this.fsSource);
+    const vertexShader = this.loadShader(this.gl, this.gl.VERTEX_SHADER, this.vsSource)
+    const fragmentShader = this.loadShader(this.gl, this.gl.FRAGMENT_SHADER, this.fsSource)
 
     // Créer le programme shader
 
